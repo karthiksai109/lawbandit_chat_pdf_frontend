@@ -19,7 +19,7 @@ export default function FileUpload({ onUploaded }: Props) {
 
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/upload`, {
         method: "POST",
         body: formData,
       });
