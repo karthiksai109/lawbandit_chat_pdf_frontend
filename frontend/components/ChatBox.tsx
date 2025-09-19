@@ -18,21 +18,35 @@ export default function ChatBox({ fileId }: Props) {
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    const newMessages = [...messages, { sender: "user", text: input }];
+    // ✅ Explicitly typed as Message[]
+    const newMessages: Message[] = [
+      ...messages,
+      { sender: "user" as const, text: input },
+    ];
     setMessages(newMessages);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/ask`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: fileId, question: input }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/ask`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: fileId, question: input }),
+        }
+      );
 
       const data = await res.json();
-      setMessages([...newMessages, { sender: "bot", text: data.answer }]);
+
+      setMessages([
+        ...newMessages,
+        { sender: "bot" as const, text: data.answer },
+      ]);
     } catch (err) {
       console.error(err);
-      setMessages([...newMessages, { sender: "bot", text: "⚠️ Error fetching answer" }]);
+      setMessages([
+        ...newMessages,
+        { sender: "bot" as const, text: "⚠️ Error fetching answer" },
+      ]);
     }
 
     setInput("");
@@ -45,7 +59,9 @@ export default function ChatBox({ fileId }: Props) {
           <p
             key={i}
             className={`p-2 my-1 rounded ${
-              m.sender === "user" ? "bg-blue-200 text-right" : "bg-gray-300 text-left"
+              m.sender === "user"
+                ? "bg-blue-200 text-right"
+                : "bg-gray-300 text-left"
             }`}
           >
             {m.text}
@@ -57,7 +73,7 @@ export default function ChatBox({ fileId }: Props) {
         <input
           type="text"
           value={input}
-          onChange={e => setInput(e.target.value)}
+          onChange={(e) => setInput(e.target.value)}
           className="flex-1 border rounded p-2"
           placeholder="Ask a question..."
         />
