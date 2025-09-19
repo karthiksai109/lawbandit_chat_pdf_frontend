@@ -38,7 +38,7 @@ styles/ # global styles
 
 1. Clone this repo:
    ```bash
-   git clone https://github.com/<your-username>/lawbandit_chat_pdf_frontend.git
+   git clone https://github.com/karthiksai109/lawbandit_chat_pdf_frontend.git
    cd lawbandit_chat_pdf_frontend
 
 
